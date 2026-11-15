@@ -15,4 +15,4 @@ App per imparare la chitarra (classica e acustica). Funziona offline ed è insta
 - **Computer (Chrome/Edge):** icona di installazione nella barra dell'indirizzo.
 
 ## Aggiornamenti
-Dopo aver modificato i file, cambia il nome della cache in `sw.js` (es. `chitarra-da-zero-v5`): così chi ha l'app installata riceve la nuova versione.
+Dopo aver modificato i file, cambia il nome della cache in `sw.js` (es. `chitarra-da-zero-v6`): così chi ha l'app installata riceve la nuova versione.

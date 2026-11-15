@@ -8,8 +8,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#120e0a",
-  "theme_color": "#120e0a",
+  "background_color": "#f4f5fa",
+  "theme_color": "#ffffff",
   "categories": ["education", "music"],
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
