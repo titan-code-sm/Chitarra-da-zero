@@ -246,6 +246,9 @@ footer{color:var(--muted);text-align:center;font-size:.78rem;padding:16px}
 .hdr-r .btn{white-space:nowrap;padding:6px 10px;min-height:36px;font-size:.82rem}
 @media(max-width:430px){.brand{font-size:.98rem;gap:7px}.logo{width:28px;height:28px}.hdr{padding:8px 10px}}
 @media(max-width:350px){.brand span{display:none}}
+.search{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 14px;font-size:1rem;font-family:inherit;margin:4px 0 6px;-webkit-appearance:none}
+.search:focus{outline:2px solid var(--acc);border-color:transparent}
+.gtag{font-size:.72rem;color:var(--muted);margin-top:2px}
 </style>
 </head>
 <body>
@@ -656,8 +659,10 @@ footer{color:var(--muted);text-align:center;font-size:.78rem;padding:16px}
 <section class="tab" id="tab-songs">
   <div id="songListWrap">
     <div class="card">
-      <h2>🎤 Canzoni con accordi</h2>
+      <div class="row" style="justify-content:space-between"><h2 style="margin:0">🎤 Canzoni con accordi</h2><span class="muted small" id="songCount"></span></div>
       <p class="muted small">Accordi, ritmo, struttura e modalità <b>suona insieme</b>. I testi non sono inclusi (diritti d'autore): ascolta l'originale e segui gli accordi.</p>
+      <input type="search" id="songSearch" class="search" placeholder="🔍 Cerca canzone o artista…" autocomplete="off">
+      <div class="chips scroll" id="songGenre"></div>
       <div class="chips scroll" id="songFilter">
         <button class="chip on" data-l="0">Tutte</button><button class="chip" data-l="1">★ Facili</button><button class="chip" data-l="2">★★ Medie</button><button class="chip" data-l="3">★★★ Barré</button>
       </div>
@@ -1074,6 +1079,16 @@ const CH={
  Cg:{n:'C/G',label:'C/G (Orange Sky)',it:'Do con basso Sol',cat:'base',f:[3,3,2,0,1,0],fg:[3,4,2,0,1,0],lv:2,tip:"La forma del Do con il basso in Sol: anulare sulla 6ª corda e mignolo sulla 5ª, entrambe al 3° tasto. Suonano tutte e 6 le corde: è il suono pieno di «Orange Sky»."},
  Fmaj7c:{n:'Fmaj7',label:'Fmaj7/C (Orange Sky)',it:'Fa settima maggiore con basso Do',cat:'sett',f:[-1,3,3,2,1,0],fg:[0,3,4,2,1,0],lv:1,tip:"Fa senza barré con il Mi cantino a vuoto. Dal C/G l'indice NON si muove (2ª corda, 1° tasto): sposta solo le altre dita di una corda."},
  Bm7:{n:'Bm7',label:'Bm7 (facile)',it:'Si minore settima (senza barré)',cat:'sett',f:[-1,2,0,2,0,2],fg:[0,1,0,2,0,3],lv:1,tip:"Tre dita tutte al 2° tasto, una corda sì e una no. Sostituisce il Si minore barré con un suono morbido."},
+ 'F#5':{n:'F#5',it:'Fa diesis power chord',cat:'power',f:[2,4,4,-1,-1,-1],fg:[1,3,4,0,0,0],lv:2,tip:"La forma del G5 spostata al 2° tasto. In «Iron Man» si alterna con il G5 un tasto sopra."},
+ F5:{n:'F5',it:'Fa power chord',cat:'power',f:[1,3,3,-1,-1,-1],fg:[1,3,4,0,0,0],lv:2,tip:"Forma mobile sulla 6ª corda al 1° tasto. Smorza le altre corde con le dita."},
+ Ab5:{n:'Ab5',it:'La bemolle power chord',cat:'power',f:[4,6,6,-1,-1,-1],fg:[1,3,4,0,0,0],lv:2,tip:"Forma mobile sulla 6ª corda al 4° tasto."},
+ B5:{n:'B5',it:'Si power chord',cat:'power',f:[-1,2,4,4,-1,-1],fg:[0,1,3,4,0,0],lv:2,tip:"Forma mobile sulla 5ª corda al 2° tasto: stessa forma del A5 spostata."},
+ C5:{n:'C5',it:'Do power chord',cat:'power',f:[-1,3,5,5,-1,-1],fg:[0,1,3,4,0,0],lv:2,tip:"Forma mobile sulla 5ª corda al 3° tasto."},
+ Bb5:{n:'Bb5',it:'Si bemolle power chord',cat:'power',f:[-1,1,3,3,-1,-1],fg:[0,1,3,4,0,0],lv:2,tip:"Forma mobile sulla 5ª corda al 1° tasto."},
+ Db5:{n:'Db5',it:'Re bemolle power chord',cat:'power',f:[-1,4,6,6,-1,-1],fg:[0,1,3,4,0,0],lv:2,tip:"Forma mobile sulla 5ª corda al 4° tasto."},
+ 'F#':{n:'F#',it:'Fa diesis maggiore',cat:'barre',f:[2,4,4,3,2,2],fg:[1,3,4,2,1,1],barre:{fret:2,from:0,to:5},lv:3,tip:"La forma del Fa barré spostata al 2° tasto."},
+ 'G#m':{n:'G#m',it:'Sol diesis minore',cat:'barre',f:[4,6,6,4,4,4],fg:[1,3,4,1,1,1],barre:{fret:4,from:0,to:5},lv:3,tip:"Forma del Mi minore con barré al 4° tasto."},
+ D69:{n:'D6/9',label:'D6/9 (Horse with No Name)',it:'Re sesta nona con basso Fa#',cat:'sus',f:[2,0,0,2,0,0],fg:[1,0,0,2,0,0],lv:1,tip:"Solo due dita al 2° tasto (6ª e 3ª corda), tutte le corde suonano. Si alterna con il Mi minore."},
  G5:{n:'G5',it:'Sol power chord',cat:'power',f:[3,5,5,-1,-1,-1],fg:[1,3,4,0,0,0],lv:2,tip:"La forma «mobile»: spostala su e giù lungo la 6ª corda per fare tutti i power chord."}
 };
 const CH_CATS=[['all','Tutti'],['base','Base'],['sett','Settime'],['sus','Sus / add'],['barre','Barré'],['power','Power chord']];
@@ -1125,6 +1140,35 @@ const FP_PROGS=[
 
 /* ================= DATA: SONGS ================= */
 const SONGS=[
+ /* ---- Metal & hard rock ---- */
+ {id:'nothingelse',t:'Nothing Else Matters',a:'Metallica',g:'metal',lv:2,bpm:46,time:6,pat:'arp68',capo:0,key:'Mi minore (Em)',sec:[{n:'Intro',b:['Em'],r:4},{n:'Strofa',b:['Em',['D','C'],'Em',['D','C']],r:2},{n:'Ritornello',b:['C','A','D','C','A','D','C','A','D','Em'],r:1},{n:'Strofa',b:['Em',['D','C'],'Em',['D','C']],r:2},{n:'Ritornello',b:['C','A','D','C','A','D','C','A','D','Em'],r:1}],tip:"La ballata metal per eccellenza, in 6/8 e arpeggiata. L'intro alterna il basso a vuoto con le corde acute: usa l'arpeggio 6/8. Nel ritornello attenzione al cambio C → A."},
+ {id:'paranoid',t:'Paranoid',a:'Black Sabbath',g:'metal',lv:1,bpm:160,time:4,pat:'rock',capo:0,key:'Mi minore (Em)',sec:[{n:'Strofa',b:['E5','E5','D5',['G5','E5']],r:4},{n:'Ponte',b:['E5','E5','D5','D5'],r:2},{n:'Strofa',b:['E5','E5','D5',['G5','E5']],r:4}],tip:"Solo power chord e pennate tutte in giù. Nell'ultima battuta il giro veloce è G5 – D5 – E5: qui è semplificato in G5 – E5. Parti al 60% di velocità: l'originale è velocissimo."},
+ {id:'ironman',t:'Iron Man',a:'Black Sabbath',g:'metal',lv:1,bpm:76,time:4,pat:'quarters',capo:0,key:'Si minore (Bm)',sec:[{n:'Riff',b:['B5','D5','E5',['G5','F#5'],['G5','F#5'],['D5','E5']],r:2},{n:'Strofa',b:['B5','D5','E5','E5','G5','D5','E5','E5'],r:2},{n:'Riff',b:['B5','D5','E5',['G5','F#5'],['G5','F#5'],['D5','E5']],r:1},{n:'Ritornello',b:['E5','E5',['D5','B5'],['D5','B5']],r:2}],tip:"Il riff più famoso del metal, tutto con una sola forma di power chord che scorre sul manico. Lento e pesante: lascia suonare ogni accordo."},
+ {id:'smoke',t:'Smoke on the Water',a:'Deep Purple',g:'metal',lv:1,bpm:112,time:4,pat:'quarters',capo:0,key:'Sol minore (Gm)',sec:[{n:'Riff',b:[['G5','Bb5'],'C5',['G5','Bb5'],['Db5','C5'],['G5','Bb5'],'C5',['Bb5','G5'],'G5'],r:2},{n:'Strofa',b:['G5','G5','G5','G5'],r:4},{n:'Ritornello',b:['C5','Ab5','G5','G5','C5','Ab5','G5','G5'],r:1},{n:'Riff',b:[['G5','Bb5'],'C5',['G5','Bb5'],['Db5','C5'],['G5','Bb5'],'C5',['Bb5','G5'],'G5'],r:2}],tip:"Il primo riff che impara ogni chitarrista. Qui è in power chord: G5 – Bb5 – C5, poi con il Db5 di passaggio. Nell'originale è suonato a due corde, ma il suono è lo stesso."},
+ {id:'highway',t:'Highway to Hell',a:'AC/DC',g:'metal',lv:2,bpm:116,time:4,pat:'rock',capo:0,key:'La (A)',sec:[{n:'Intro',b:['A',['D','G'],['D','G'],['D','A']],r:1},{n:'Strofa',b:['A',['D','G'],['D','G'],['D','A'],'A',['D','G'],['D','G'],'E'],r:2},{n:'Ritornello',b:['A',['D','G'],'A',['D','G'],'A',['D','G'],'A','A'],r:2}],tip:"Pensa «A – D – G – A». Nell'originale il Re ha il Fa# al basso (D/F#): quando sei pronto premi la 6ª corda al 2° tasto con il pollice. Accordi corti e staccati, con pause tra un colpo e l'altro."},
+ /* ---- Rock ---- */
+ {id:'sevennation',t:'Seven Nation Army',a:'The White Stripes',g:'rock',lv:1,bpm:124,time:4,pat:'quarters',capo:0,key:'Mi minore (Em)',sec:[{n:'Intro',b:['E5',['C5','B5']],r:4},{n:'Strofa',b:['E5',['C5','B5']],r:8},{n:'Ritornello',b:['E5',['C5','B5']],r:4}],tip:"Il riff originale è a note singole (Mi – Mi – Sol – Mi – Re – Do – Si). Con i power chord E5 – C5 – B5 lo suoni pieno, come nel ritornello. Due battute che si ripetono per tutta la canzone."},
+ {id:'teenspirit',t:'Smells Like Teen Spirit',a:'Nirvana',g:'rock',lv:2,bpm:117,time:4,pat:'eighths',capo:0,key:'Fa minore',sec:[{n:'Intro',b:[['F5','Bb5'],['Ab5','Db5']],r:4},{n:'Strofa',b:[['F5','Bb5'],['Ab5','Db5']],r:4},{n:'Ritornello',b:[['F5','Bb5'],['Ab5','Db5']],r:4}],tip:"Grunge: quattro power chord sempre uguali, F5 – Bb5 – Ab5 – Db5. Nella strofa suona piano e smorzato, nel ritornello forte. Ottimo esercizio per spostare la forma del power chord tra 6ª e 5ª corda."},
+ {id:'wishyou',t:'Wish You Were Here',a:'Pink Floyd',g:'rock',lv:2,bpm:60,time:4,pat:'ballad',capo:0,key:'Sol (G)',sec:[{n:'Intro',b:['Em','G','Em','G','Em','A','Em','A','G'],r:1},{n:'Strofa',b:['C','D','Am','G','D','C','Am','G'],r:2},{n:'Intro',b:['Em','G','Em','G','Em','A','Em','A','G'],r:1},{n:'Strofa',b:['C','D','Am','G','D','C','Am','G'],r:2}],tip:"Tutti accordi aperti. Nella strofa il Re può diventare D/F# (pollice sulla 6ª corda al 2° tasto). Ritmo tranquillo, quasi acustico."},
+ {id:'hotelcal',t:'Hotel California',a:'Eagles',g:'rock',lv:3,bpm:74,time:4,pat:'arp44',capo:0,key:'Si minore (Bm)',sec:[{n:'Strofa',b:['Bm','F#','A','E','G','D','Em','F#'],r:2},{n:'Ritornello',b:['G','D','F#','Bm','G','D','Em','F#'],r:1}],tip:"Otto accordi, due barré (Bm e F#). Ottimo traguardo per allenare i barré. Arpeggiata o con la ballata."},
+ {id:'creep',t:'Creep',a:'Radiohead',g:'rock',lv:3,bpm:92,time:4,pat:'eighths',capo:0,key:'Sol (G)',sec:[{n:'Strofa',b:['G','B','C','Cm'],r:4},{n:'Ritornello',b:['G','B','C','Cm'],r:4}],tip:"Sempre G – B – C – Cm. Il Si maggiore e il Do minore sono barré: il Cm è il passaggio più emozionante del giro."},
+ /* ---- Folk ---- */
+ {id:'horse',t:'A Horse with No Name',a:'America',g:'folk',lv:1,bpm:122,time:4,pat:'eighths',capo:0,key:'Mi minore (Em)',sec:[{n:'Strofa',b:['Em','D69'],r:8},{n:'Ritornello',b:['Em','D69'],r:8}],tip:"Solo due accordi per tutta la canzone, e il secondo è facilissimo (due dita). Perfetta per allenare il ritmo continuo con la mano destra."},
+ {id:'blowin',t:"Blowin' in the Wind",a:'Bob Dylan',g:'folk',lv:1,bpm:88,time:4,pat:'ballad',capo:0,key:'Sol (G)',sec:[{n:'Strofa',b:['G','C','G','G','G','C','D','D','G','C','G','Em','G','C','D','D'],r:1},{n:'Ritornello',b:['C','D','G','Em','C','D','G','G'],r:1},{n:'Strofa',b:['G','C','G','G','G','C','D','D','G','C','G','Em','G','C','D','D'],r:1},{n:'Ritornello',b:['C','D','G','Em','C','D','G','G'],r:1}],tip:"Il folk americano in quattro accordi. Allena G ↔ C, che ritrovi in centinaia di canzoni."},
+ {id:'soundsilence',t:'The Sound of Silence',a:'Simon & Garfunkel',g:'folk',lv:2,bpm:106,time:4,pat:'arp44',capo:6,key:'La minore (Am) · capo 6 per l\'originale',sec:[{n:'Strofa',b:['Am','G','G','Am','Am','C','F','C','C','F','C','F','C','Am','C','G','Am'],r:3}],tip:"Arpeggiata e malinconica. Il Fa è barré: se è troppo difficile usa Fmaj7. Con il capotasto al 6° tasto sei nella tonalità del disco."},
+ {id:'scarborough',t:'Scarborough Fair',a:'Ballata tradizionale inglese',g:'folk',lv:1,bpm:108,time:3,pat:'waltz',capo:0,key:'La minore (Am)',sec:[{n:'Strofa',b:['Am','G','Am','Am','C','Am','D','Am','Am','C','G','F','Am','G','Am','Am'],r:3}],tip:"Melodia tradizionale in 3/4 (valzer): basso – accordo – accordo. Il Fa qui è quello facile o Fmaj7."},
+ {id:'wellerman',t:'Wellerman',a:'Canto marinaresco tradizionale',g:'folk',lv:1,bpm:100,time:4,pat:'quarters',capo:0,key:'La minore (Am)',sec:[{n:'Strofa',b:['Am',['Dm','Am'],'Am',['E','Am']],r:2},{n:'Ritornello',b:[['Ffacile','C'],['Dm','Am'],['Ffacile','C'],['E','Am']],r:2}],tip:"Sea shanty da cantare tutti insieme. Pennate forti sui tempi, come se battessi il piede."},
+ {id:'jetplane',t:'Leaving on a Jet Plane',a:'John Denver',g:'folk',lv:1,bpm:72,time:4,pat:'ballad',capo:0,key:'Sol (G)',sec:[{n:'Strofa',b:['G','C','G','C','G','C','D','D'],r:2},{n:'Ritornello',b:['G','C','G','C','G','C','D','D'],r:2}],tip:"Solo G, C e D. Strofa e ritornello hanno lo stesso giro: perfetta come seconda canzone."},
+ /* ---- Country ---- */
+ {id:'countryroads',t:'Take Me Home, Country Roads',a:'John Denver',g:'country',lv:1,bpm:82,time:4,pat:'country',capo:2,key:'Sol (G) · capo 2 per l\'originale',sec:[{n:'Strofa',b:['G','Em','D',['C','G']],r:2},{n:'Ritornello',b:['G','D','Em','C','G','D','C','G'],r:1},{n:'Strofa',b:['G','Em','D',['C','G']],r:2},{n:'Ritornello',b:['G','D','Em','C','G','D','C','G'],r:1},{n:'Ponte',b:['Em','D','G','G','C','G','D','D7'],r:1},{n:'Ritornello',b:['G','D','Em','C','G','D','C','G'],r:2}],tip:"Prova il ritmo a basso alternato: è il suono del country. Con il capotasto al 2° tasto sei nella tonalità originale."},
+ {id:'jolene',t:'Jolene',a:'Dolly Parton',g:'country',lv:1,bpm:110,time:4,pat:'eighths',capo:4,key:'La minore (Am) · capo 4 per l\'originale',sec:[{n:'Ritornello',b:['Am','C','G','Am','G','Em','Am','Am'],r:2},{n:'Strofa',b:['Am','C','G','Am','G','Em','Am','Am'],r:2},{n:'Ritornello',b:['Am','C','G','Am','G','Em','Am','Am'],r:2}],tip:"Lo stesso giro per tutta la canzone. Nell'originale c'è un fingerpicking veloce: inizia con gli ottavi e poi prova l'arpeggio."},
+ /* ---- Blues ---- */
+ {id:'blues12a',t:'Blues in 12 battute (La)',a:'Forma tradizionale del blues',g:'blues',lv:1,bpm:90,time:4,pat:'country',capo:0,key:'La (A)',sec:[{n:'Giro di blues',b:['A7','A7','A7','A7','D7','D7','A7','A7','E7','D7','A7','E7'],r:4}],tip:"La base di tutto il blues e del rock'n'roll: 4 battute di La, 2 di Re, 2 di La, poi Mi – Re – La – Mi. Impara la forma e potrai suonare con chiunque."},
+ {id:'blues12e',t:'Blues in Mi (quick change)',a:'Forma tradizionale del blues',g:'blues',lv:1,bpm:96,time:4,pat:'eighths',capo:0,key:'Mi (E)',sec:[{n:'Giro di blues',b:['E7','A7','E7','E7','A7','A7','E7','E7','B7','A7','E7','B7'],r:4}],tip:"Il blues in Mi con il «quick change»: alla 2ª battuta si va subito sul La. Il B7 è il passaggio più difficile, allenalo nei Cambi."},
+ /* ---- Reggae ---- */
+ {id:'threebirds',t:'Three Little Birds',a:'Bob Marley',g:'reggae',lv:1,bpm:74,time:4,pat:'reggae',capo:0,key:'La (A)',sec:[{n:'Ritornello',b:['A','A','D','A','A','A','D','A'],r:2},{n:'Strofa',b:['A','E','A','D','A','E','D','A'],r:2},{n:'Ritornello',b:['A','A','D','A','A','A','D','A'],r:2}],tip:"Ritmo reggae: pennate corte solo in levare (sulle «e»), la mano scende a vuoto sui tempi. Tre accordi facili: A, D, E."},
+ /* ---- Punk ---- */
+ {id:'basketcase',t:'Basket Case',a:'Green Day',g:'punk',lv:3,bpm:170,time:4,pat:'rock',capo:0,key:'Mi (E) · originale un semitono sotto',sec:[{n:'Strofa',b:['E','B','C#m','G#m','A','E','B','B'],r:2},{n:'Ritornello',b:['A','B','E','E','A','B','E','E','A','B','E','B'],r:1}],tip:"Punk veloce: pennate tutte in giù. Nell'originale la chitarra è accordata mezzo tono sotto (Mib). Due barré (C#m e G#m): se sono difficili usa i power chord."},
  {id:'orangesky',t:'Orange Sky',a:'Alexi Murdoch',lv:1,bpm:70,time:4,pat:'ballad',capo:2,key:'Re (D)',feat:true,
   sec:[{n:'Intro',b:['Cg','Fmaj7c'],r:4},{n:'Strofa 1',b:['Cg','Fmaj7c'],r:6},{n:'Strofa 2',b:['Cg','Fmaj7c'],r:5},{n:'Strofa 3',b:['Cg','Fmaj7c'],r:5},{n:'Ritornello',b:['Cg','Fmaj7c'],r:4},{n:'Ponte',b:['Am','G','Fmaj7c'],r:3},{n:'Ritorno',b:['Cg','Fmaj7c'],r:1},{n:'Parte lenta',b:['Cg','Fmaj7c'],r:4},{n:'Ritornello',b:['Cg','Fmaj7c'],r:4},{n:'Finale',b:['Cg','Fmaj7c'],r:8},{n:'Accordo finale',b:['Cg'],r:1}],
   versions:[
@@ -1149,6 +1193,11 @@ const SONGS=[
  {id:'someone',t:'Someone Like You',a:'Adele',lv:3,bpm:67,time:4,pat:'arp44',capo:0,key:'La (A)',sec:[{n:'Strofa',b:['A','E','F#m','D'],r:4},{n:'Ritornello',b:['A','E','F#m','D'],r:4}],tip:"Arpeggiata. Il F#m è barré: se è ancora difficile metti il capotasto al 2° tasto e suona G – D – Em – C."},
  {id:'despacito',t:'Despacito',a:'Luis Fonsi feat. Daddy Yankee',lv:3,bpm:89,time:4,pat:'pop',capo:0,key:'Si minore (Bm)',sec:[{n:'Strofa',b:['Bm','G','D','A'],r:4},{n:'Ritornello',b:['Bm','G','D','A'],r:4}],tip:"Sempre Bm – G – D – A. Senza barré: capotasto al 2° tasto e suona Am – F (facile) – C – G."}
 ];
+
+const SONG_G={orangesky:'folk',knockin:'rock',stand:'pop',zombie:'rock',imyours:'pop',riptide:'folk',browneyed:'rock',letitbe:'pop',rain:'rock',alabama:'rock',perfect:'pop',hallelujah:'folk',rising:'folk',bellaciao:'trad',auguri:'trad',wonderwall:'rock',someone:'pop',despacito:'pop'};
+SONGS.forEach(s=>{if(!s.g)s.g=SONG_G[s.id]||'pop';});
+const GENRES=[['all','Tutti'],['metal','🤘 Metal'],['rock','🎸 Rock'],['folk','🌾 Folk'],['country','🤠 Country'],['blues','🎷 Blues'],['reggae','🌴 Reggae'],['punk','⚡ Punk'],['pop','🎵 Pop'],['trad','🇮🇹 Popolari']];
+const GNAME=Object.fromEntries(GENRES);
 
 /* ================= DATA: SCORE / PIECES ================= */
 const PC_LET=[0,0,1,1,2,3,3,4,4,5,5,6],PC_ACC=[0,1,0,1,0,0,1,0,1,0,1,0];
@@ -1206,7 +1255,7 @@ const LESSONS=[
  {t:'Settime e sospesi',h:`<p>Settime (E7, A7, D7, B7) per il colore blues; sospesi (Dsus2, Dsus4) per abbellire.</p>`,a:[['✋ E7','chords','E7'],['✋ D7','chords','D7'],['✋ Dsus4','chords','Dsus4'],['✋ B7','chords','B7']]},
  {t:'Arpeggi e tempo 6/8',h:`<p>Suona le corde una alla volta. Prova l'arpeggio e poi The House of the Rising Sun.</p>`,a:[['🤚 Arpeggi p-i-m-a','fingers','pimami'],['🎤 Rising Sun','songs','rising'],['🎤 Hallelujah','songs','hallelujah']]},
  {t:'Il Fa (F): il primo barré',h:`<p>Parti dal <b>F facile</b> o da <b>Fmaj7</b>, poi il barré completo e il <b>Bm</b>. Ci vogliono settimane: è normale!</p>`,a:[['✋ F facile','chords','Ffacile'],['✋ F','chords','F'],['✋ Bm','chords','Bm'],['🎤 Let It Be','songs','letitbe']]},
- {t:'Melodie, scale e power chord',h:`<p>Leggi melodie in TAB, impara la pentatonica e i power chord.</p>`,a:[['🎼 Brani','pieces','ode'],['🎵 Pentatonica','notes','ampent'],['✋ Power chord','chords','G5']]}
+ {t:'Melodie, scale e power chord',h:`<p>Leggi melodie in TAB, impara la pentatonica e i power chord.</p>`,a:[['🎼 Brani','pieces','ode'],['🎵 Pentatonica','notes','ampent'],['✋ Power chord','chords','G5'],['🤘 Smoke on the Water','songs','smoke'],['🤘 Iron Man','songs','ironman']]}
 ];
 const LESSONS_CL=[
  {t:'La chitarra classica e la postura',h:`<p>Poggiapiede sotto il piede sinistro, chitarra sulla gamba sinistra, paletta all'altezza della spalla. Mano destra tra buca e ponte.</p>`,a:[['🎼 Postura classica','guitar','classica']]},
@@ -1800,10 +1849,13 @@ function initChanges(){
 /* ================= SONGS PAGE ================= */
 let sgHV,sgArr,sgSeq=null,curSong=null,sgBars=[],sgCells=[],sgStartBar=0,songFilter=0,sgPat=null;
 function songChords(song){const out=[];song.sec.forEach(sec=>sec.b.forEach(b=>(Array.isArray(b)?b:[b]).forEach(c=>{if(!out.includes(c))out.push(c);})));return out;}
+let songGenre='all';
 function renderSongList(){
-  const h=$('#songList');h.innerHTML='';
-  SONGS.forEach(s=>{if(songFilter&&s.lv!==songFilter)return;const d=el('div','songcard',`<div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h4>${s.t}</h4><span class="lvl">${'★'.repeat(s.lv)}</span></div><div class="by">${s.a}${s.feat?' · <b style="color:var(--acc)">🌅 con corso</b>':''}</div><div class="cl">${songChords(s).map(c=>`<span class="tag">${CH[c].n}</span>`).join('')}${s.capo?`<span class="tag" style="color:var(--acc)">capo ${s.capo}</span>`:''}</div>`);
+  const h=$('#songList');h.innerHTML='';const q=($('#songSearch').value||'').trim().toLowerCase();let n=0;
+  SONGS.forEach(s=>{if(songFilter&&s.lv!==songFilter)return;if(songGenre!=='all'&&s.g!==songGenre)return;if(q&&!(s.t+' '+s.a).toLowerCase().includes(q))return;n++;const d=el('div','songcard',`<div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h4>${s.t}</h4><span class="lvl">${'★'.repeat(s.lv)}</span></div><div class="by">${s.a}${s.feat?' · <b style="color:var(--acc)">🌅 con corso</b>':''}</div><div class="gtag">${GNAME[s.g]||''}</div><div class="cl">${songChords(s).map(c=>`<span class="tag">${CH[c].n}</span>`).join('')}${s.capo?`<span class="tag" style="color:var(--acc)">capo ${s.capo}</span>`:''}</div>`);
     d.onclick=()=>openSong(s.id);h.appendChild(d);});
+  if(!n)h.innerHTML='<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">Nessuna canzone trovata.</p>';
+  $('#songCount').textContent=n+' canzoni';
 }
 function flatten(song){const bars=[];song.sec.forEach((sec,si)=>{for(let r=0;r<(sec.r||1);r++)sec.b.forEach((b,bi)=>bars.push({si,bi,r,chords:Array.isArray(b)?b:[b]}));});return bars;}
 function setSongPattern(k){sgPat=k;const pat=PATTERNS[k];$('#sgPatName').textContent=pat.name+' — '+pat.desc;sgArr=buildArrows($('#sgArrows'),pat);$$('#sgPatChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.k===k));}
@@ -1861,7 +1913,10 @@ function startSong(){
   });
 }
 function initSongs(){
-  sgHV=HandView($('#sgHand'));renderSongList();
+  sgHV=HandView($('#sgHand'));
+  const gh=$('#songGenre');GENRES.forEach(([k,l])=>{const b=el('button','chip'+(k===songGenre?' on':''),l);b.dataset.g=k;b.onclick=()=>{songGenre=k;$$('#songGenre .chip').forEach(c=>c.classList.toggle('on',c===b));renderSongList();};gh.appendChild(b);});
+  $('#songSearch').addEventListener('input',renderSongList);
+  renderSongList();
   $('#songFilter').addEventListener('click',e=>{const b=e.target.closest('[data-l]');if(!b)return;songFilter=+b.dataset.l;$$('#songFilter .chip').forEach(c=>c.classList.toggle('on',c===b));renderSongList();});
   $('#sgBack').onclick=closeSong;
   $('#sgPlay').onclick=()=>{if(sgSeq){stopSong();return;}stopAll();startSong();const c=$('#sgPlayCard');const r=c.getBoundingClientRect();if(r.top<60||r.top>window.innerHeight*.4)window.scrollTo({top:r.top+window.scrollY-64,behavior:'smooth'});};

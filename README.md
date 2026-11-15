@@ -1,6 +1,6 @@
 # Chitarra da Zero
 
-Novità: corso **Orange Sky** (Alexi Murdoch) con versione «come il disco» (capotasto 2) e versione facile, hammer-on nella base, home semplificata, nuova icona e scorciatoie (tieni premuta l'icona: Orange Sky, Accordatore, Canzoni).
+Novità: **40 canzoni** divise per genere (metal, rock, folk, country, blues, reggae, punk, pop, popolari) con ricerca; corso **Orange Sky** (Alexi Murdoch) con versione «come il disco» (capotasto 2) e versione facile, hammer-on nella base, home semplificata, nuova icona e scorciatoie (tieni premuta l'icona: Orange Sky, Accordatore, Canzoni).
 
 App per imparare la chitarra (classica e acustica). Funziona offline ed è installabile su telefono, tablet e computer.
 
@@ -15,4 +15,4 @@ App per imparare la chitarra (classica e acustica). Funziona offline ed è insta
 - **Computer (Chrome/Edge):** icona di installazione nella barra dell'indirizzo.
 
 ## Aggiornamenti
-Dopo aver modificato i file, cambia il nome della cache in `sw.js` (es. `chitarra-da-zero-v4`): così chi ha l'app installata riceve la nuova versione.
+Dopo aver modificato i file, cambia il nome della cache in `sw.js` (es. `chitarra-da-zero-v5`): così chi ha l'app installata riceve la nuova versione.
